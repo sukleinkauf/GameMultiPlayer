@@ -1,5 +1,7 @@
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,8 +13,9 @@ import java.awt.event.KeyEvent;
  * @author gabriel
  */
 public class GamePanel extends javax.swing.JFrame implements Runnable {
-    ConectarServer server;
+    static List<Player> players = new ArrayList();
     Player player;
+    ConectarServer server;
     Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false,  keyFight = false;
     Thread t;
     Integer speed = 4;
@@ -24,7 +27,6 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         initComponents();
         server = new ConectarServer("localhost", 8000);
         server.iniciar();
-
     }
 
     /**
@@ -56,58 +58,62 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        // TODO add your handling code here:
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                keyRight = true;
+                server.enviarMensagem("T:MP-M:R-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_LEFT:
-                keyLeft = true;
+                server.enviarMensagem("T:MP-M:L-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_UP:
-                keyUp = true;
+                server.enviarMensagem("T:MP-M:U-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_DOWN:
-                keyDown = true;
+                server.enviarMensagem("T:MP-M:D-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_SPACE:
-            	keyFight = true;
+                server.enviarMensagem("T:MP-M:F-X:" + player.getX() + "-Y:" + player.getY());
             	break;
         }
 
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-        // TODO add your handling code here:
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                keyRight = false;
+                server.enviarMensagem("T:MR-M:R-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_LEFT:
-                keyLeft = false;
+                server.enviarMensagem("T:MR-M:L-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_UP:
-                keyUp = false;
+                server.enviarMensagem("T:MR-M:U-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_DOWN:
-                keyDown = false;
+                server.enviarMensagem("T:MR-M:D-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_SPACE:
-            	keyFight = false;
-            	break;
+                server.enviarMensagem("T:MR-M:F-X:" + player.getX() + "-Y:" + player.getY());
+                break;
         }
     }//GEN-LAST:event_formKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        player = new Player(0,0);
+        player = new Player();
         player.setup();
+        player.Nome = Integer.toString(player.hashCode());
+        players.add(player);
+
         getContentPane().add(player);
         repaint();
+
         t = new Thread(this);
         t.start();
-    }//GEN-LAST:event_formWindowOpened
 
+        server.container = getContentPane();
+        server.myHash = player.Nome;
+    }//GEN-LAST:event_formWindowOpened
+    
     /**
      * @param args the command line arguments
      */
@@ -146,39 +152,40 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         });        
     }
 
-    public void updateGame() throws InterruptedException {
-        if (keyRight) {
-            player.setIconRight();
-            player.x += speed;
-        }
-        
-        if (keyLeft) {
-            player.setIconLeft();
-            player.x -= speed;
-        }
-        
-        if (keyUp) {
-            player.y -= speed;
-        }
-        
-        if (keyDown) {
-            player.y += speed;
-        }
-        if(keyFight) {
-        	player.setIconFight();
-        	player.setF(1);
-        	Thread.sleep(1000);
-        }
-        
-        
-        if(!(keyDown||keyUp||keyLeft||keyRight||keyFight)){
-        	player.setF(0);
-        	player.setIconStopped();
-        }
-        player.move();
-        server.enviarMensagem("X:" + player.getX() + "|Y:" + player.getY() +"|F:"+ player.getF());
-    }
+    public void updateGame() {
+        if(server == null || server.player == null)
+            return;
 
+        server.player.setF(0);
+
+        if (server.keyRight) {
+            server.player.setIconRight();
+            server.player.x += speed;
+        }
+        
+        if (server.keyLeft) {
+            server.player.setIconLeft();
+            server.player.x -= speed;
+        }
+        
+        if (server.keyUp) {
+            server.player.y -= speed;
+        }
+        
+        if (server.keyDown) {
+            server.player.y += speed;
+        }
+        if(server.keyFight) {
+        	server.player.setIconFight();
+        	server.player.setF(1);
+        }
+        
+        if(!(server.keyDown||server.keyUp||server.keyLeft||server.keyRight||server.keyFight)){        	
+        	server.player.setIconStopped();
+        }
+        server.player.move();
+    }
+    
     @Override
     public void run() {
         while (true) {
