@@ -24,6 +24,13 @@
             "request": "launch",
             "mainClass": "GamePanel",
             "projectName": "Game"
+        },
+        {
+            "type": "java",
+            "name": "Player 3",
+            "request": "launch",
+            "mainClass": "GamePanel",
+            "projectName": "Game"
         }        
     ]
 }

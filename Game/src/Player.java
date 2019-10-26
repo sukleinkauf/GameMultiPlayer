@@ -14,7 +14,7 @@ import javax.swing.JLabel;
  * @author gabriel
  */
 public class Player extends JLabel{
-    public String Nome;
+    public String identifier;
     public int x = 0, y = 0, f = 0;   
 	ImageIcon walkL;
     ImageIcon walkR;
