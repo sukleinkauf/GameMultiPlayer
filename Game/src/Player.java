@@ -20,6 +20,7 @@ public class Player extends JLabel{
     ImageIcon walkU;
     ImageIcon walkD;
     ImageIcon stopped;
+    ImageIcon figth;
     public void setup(){
         setText("12");
         walkR = new ImageIcon(
@@ -27,7 +28,11 @@ public class Player extends JLabel{
                         .getResource("c_d.gif"))
                         .getImage()
                         .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
-        
+        walkL = new ImageIcon(
+                new ImageIcon(getClass()
+                        .getResource("c_e.gif"))
+                        .getImage()
+                        .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
         stopped = new ImageIcon(
                 new ImageIcon(getClass()
                         .getResource("p_d.gif"))
@@ -35,6 +40,7 @@ public class Player extends JLabel{
                         .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
         setBounds(x, y, 90, 127);
         setIcon(walkR);
+        setIcon(walkL);
     }
     
     public void move(){
@@ -51,5 +57,8 @@ public class Player extends JLabel{
     
     public void setIconStopped(){
         setIcon(stopped);
+    }
+    public void setIconFitgh(){
+        setIcon(figth);
     }
 }

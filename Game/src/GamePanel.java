@@ -144,6 +144,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         }
         
         if (keyLeft) {
+            player.setIconLeft();;
             player.x -= speed;
         }
         
