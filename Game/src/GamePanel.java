@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
  * @author gabriel
  */
 public class GamePanel extends javax.swing.JFrame implements Runnable {
-
+    ConectarServer server;
     Player player;
     Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false;
     Thread t;
@@ -22,6 +22,8 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
      */
     public GamePanel() {
         initComponents();
+        server = new ConectarServer("localhost", 8200);
+        server.iniciar();
     }
 
     /**
@@ -134,7 +136,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
                 g.setVisible(true);
 
             }
-        });
+        });        
     }
 
     public void updateGame() {
@@ -159,6 +161,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
             player.setIconStopped();
         }
         player.move();
+        server.enviarMensagem("X: " + player.getX() + "\nY:" + player.getY());
     }
 
     @Override
