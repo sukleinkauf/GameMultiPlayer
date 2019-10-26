@@ -14,13 +14,18 @@ import javax.swing.JLabel;
  * @author gabriel
  */
 public class Player extends JLabel{
-    public int x = 0, y = 0;    
-    ImageIcon walkL;
+    public int x = 0, y = 0, f = 0;   
+	ImageIcon walkL;
     ImageIcon walkR;
     ImageIcon walkU;
     ImageIcon walkD;
     ImageIcon stopped;
-    ImageIcon figth;
+    ImageIcon fight;
+    
+    public Player(int InicialX, int InicialY) {
+    	
+    }
+    
     public void setup(){
         setText("12");
         walkR = new ImageIcon(
@@ -31,6 +36,11 @@ public class Player extends JLabel{
         walkL = new ImageIcon(
                 new ImageIcon(getClass()
                         .getResource("c_e.gif"))
+                        .getImage()
+                        .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
+        fight = new ImageIcon(
+                new ImageIcon(getClass()
+                        .getResource("c_f.png"))
                         .getImage()
                         .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
         stopped = new ImageIcon(
@@ -58,7 +68,16 @@ public class Player extends JLabel{
     public void setIconStopped(){
         setIcon(stopped);
     }
-    public void setIconFitgh(){
-        setIcon(figth);
+    public void setIconFight(){
+        setIcon(fight);
     }
+    
+    public int getF() {
+		return f;
+	}
+
+	public void setF(int f) {
+		this.f = f;
+	}
+    
 }
