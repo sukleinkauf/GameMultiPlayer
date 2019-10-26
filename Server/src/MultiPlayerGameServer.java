@@ -14,11 +14,11 @@ import java.util.List;
  * @author gabriel
  */
 public class MultiPlayerGameServer {
-  static List<PlayerConnected> clientes = new ArrayList<>();
+  static List<PlayerConnected> players = new ArrayList<>();
     ServerSocket ss;
-    Socket socketNovoCliente;
+    Socket socketNewClient;
 
-    public void configurarServidor() {
+    public void configureServer() {
         try {
             ss = new ServerSocket(8000);
         } catch (Exception e) {
@@ -26,12 +26,12 @@ public class MultiPlayerGameServer {
         }
     }
 
-    public void aguardarClientes() {
+    public void waitPlayer() {
         try {
             while (true) {
-                socketNovoCliente = ss.accept();
-                PlayerConnected novoCliente = new PlayerConnected(socketNovoCliente);                
-                clientes.add(novoCliente);
+                socketNewClient = ss.accept();
+                PlayerConnected newPlayer = new PlayerConnected(socketNewClient);                
+                players.add(newPlayer);
             }
         } catch (Exception e) {
             e.printStackTrace();

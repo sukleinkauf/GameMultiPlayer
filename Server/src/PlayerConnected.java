@@ -4,36 +4,36 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PlayerConnected implements Runnable {
-    Socket s;
-    Thread thRecebeMsg;
-    BufferedReader entrada;
-    PrintWriter saida;
+    Socket socket;
+    Thread threadReceiveMessages;
+    BufferedReader input;
+    PrintWriter output;
 
-    public PlayerConnected(Socket s){
-        configurarCliente(s);
+    public PlayerConnected(Socket socket){
+        configureClient(socket);
     }
     
-    public void configurarCliente(Socket s){
-        this.s = s;
+    public void configureClient(Socket socket){
+        this.socket = socket;
         try {
-            entrada = new BufferedReader(
-                    new InputStreamReader(s.getInputStream()));
-            saida = new PrintWriter(s.getOutputStream());
-            thRecebeMsg = new Thread(this);
-            thRecebeMsg.start();
+            input = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+            output = new PrintWriter(socket.getOutputStream());
+            threadReceiveMessages = new Thread(this);
+            threadReceiveMessages.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
         
     }
 
-    public void receberMensagens(){
+    public void receiveMessages(){
         try {
-            String msg;
-            while((msg = entrada.readLine()) != null){
-                System.out.println(msg);
-                for(PlayerConnected cliente:MultiPlayerGameServer.clientes){
-                    cliente.enviarMensagem(msg);
+            String message;
+            while((message = input.readLine()) != null){
+                System.out.println(message);
+                for(PlayerConnected cliente:MultiPlayerGameServer.players){
+                    cliente.sendMessage(message);
                 }
             }
         } catch (Exception e) {
@@ -41,14 +41,14 @@ public class PlayerConnected implements Runnable {
         }
     }
     
-    public void enviarMensagem(String msg){
-        saida.println(msg);
-        saida.flush();
+    public void sendMessage(String message){
+        output.println(message);
+        output.flush();
     }
     
     @Override
     public void run() {
-        receberMensagens();
+        receiveMessages();
     }
     
     
