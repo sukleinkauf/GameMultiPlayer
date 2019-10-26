@@ -33,11 +33,12 @@ public class ConectarServer implements Runnable{
     public void receberMensagens(){
         try {
             String msg;
+            //System.out.println(msg = in.toString());
+
             while((msg = in.readLine()) != null){
                 System.out.println(msg);
-                //TODO implementar os movimentos recebidos do adversário
-                // txtSaida.append(msg);
-                // txtSaida.append("\n");
+                
+              
             }
         } catch (Exception e) {
             e.printStackTrace();

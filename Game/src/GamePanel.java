@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
 public class GamePanel extends javax.swing.JFrame implements Runnable {
     ConectarServer server;
     Player player;
-    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false;
+    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false,  keyFight = false;
     Thread t;
     Integer speed = 4;
 
@@ -22,8 +22,9 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
      */
     public GamePanel() {
         initComponents();
-        server = new ConectarServer("localhost", 8200);
+        server = new ConectarServer("localhost", 8000);
         server.iniciar();
+
     }
 
     /**
@@ -69,6 +70,9 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
             case KeyEvent.VK_DOWN:
                 keyDown = true;
                 break;
+            case KeyEvent.VK_SPACE:
+            	keyFight = true;
+            	break;
         }
 
     }//GEN-LAST:event_formKeyPressed
@@ -88,12 +92,15 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
             case KeyEvent.VK_DOWN:
                 keyDown = false;
                 break;
+            case KeyEvent.VK_SPACE:
+            	keyFight = false;
+            	break;
         }
     }//GEN-LAST:event_formKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        player = new Player();
+        player = new Player(0,0);
         player.setup();
         getContentPane().add(player);
         repaint();
@@ -139,14 +146,14 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         });        
     }
 
-    public void updateGame() {
+    public void updateGame() throws InterruptedException {
         if (keyRight) {
             player.setIconRight();
             player.x += speed;
         }
         
         if (keyLeft) {
-            player.setIconLeft();;
+            player.setIconLeft();
             player.x -= speed;
         }
         
@@ -157,12 +164,19 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         if (keyDown) {
             player.y += speed;
         }
+        if(keyFight) {
+        	player.setIconFight();
+        	player.setF(1);
+        	Thread.sleep(1000);
+        }
         
-        if(!(keyDown||keyUp||keyLeft||keyRight)){
-            player.setIconStopped();
+        
+        if(!(keyDown||keyUp||keyLeft||keyRight||keyFight)){
+        	player.setF(0);
+        	player.setIconStopped();
         }
         player.move();
-        server.enviarMensagem("X: " + player.getX() + "\nY:" + player.getY());
+        server.enviarMensagem("X:" + player.getX() + "|Y:" + player.getY() +"|F:"+ player.getF());
     }
 
     @Override
