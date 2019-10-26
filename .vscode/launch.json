@@ -6,30 +6,24 @@
     "configurations": [
         {
             "type": "java",
-            "name": "CodeLens (Launch) - ExecPlayer",
+            "name": "Server",
             "request": "launch",
-            "mainClass": "ExecPlayer",
-            "projectName": "Game"
+            "mainClass": "ExecServer",
+            "projectName": "Server"
         },
         {
             "type": "java",
-            "name": "Debug (Launch) - Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-GamePanel<Game>",
+            "name": "Player",
             "request": "launch",
             "mainClass": "GamePanel",
             "projectName": "Game"
         },
         {
             "type": "java",
-            "name": "Debug (Launch)-ExecServer<Server>",
+            "name": "Player 2",
             "request": "launch",
-            "mainClass": "ExecServer",
-            "projectName": "Server"
-        }
+            "mainClass": "GamePanel",
+            "projectName": "Game"
+        }        
     ]
 }

@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class PlayerConnected implements Runnable {
+    String Hash;
     Socket socket;
     Thread threadReceiveMessages;
     BufferedReader input;
@@ -30,9 +32,15 @@ public class PlayerConnected implements Runnable {
     public void receiveMessages(){
         try {
             String message;
-            while((message = input.readLine()) != null){
+            while((message = input.readLine()) != null){                
                 System.out.println(message);
+
+                if(message.contains("T:N")){
+                    Hash = message;
+                }
+                
                 for(PlayerConnected cliente:MultiPlayerGameServer.players){
+                    System.out.println(message);
                     cliente.sendMessage(message);
                 }
             }
