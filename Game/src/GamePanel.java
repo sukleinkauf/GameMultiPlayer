@@ -3,7 +3,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -19,6 +21,7 @@ import javax.swing.JTextArea;
  */
 public class GamePanel extends javax.swing.JFrame implements Runnable {
     static List<Player> players = new ArrayList();
+    static Map<String,JLabel> scoresComponents = new HashMap<String,JLabel>();
     Player player;
     ConectServer server;
     Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false,  keyFight = false;
@@ -109,6 +112,13 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         player.identifier = Integer.toString(player.hashCode());
         players.add(player);
 
+        JLabel labelScore = new JLabel();
+        labelScore.setText("100");
+        labelScore.setBounds(0, 0, 100, 100);
+        
+        scoresComponents.put(player.identifier, labelScore);
+
+        getContentPane().add(labelScore);
         getContentPane().add(player);
         repaint();
 
@@ -152,11 +162,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
                 GamePanel g = new GamePanel();
                 g.setSize(800, 600);
         		g.setTitle("Mortal Kombat");
-        		// JTextArea texto = new JTextArea("Teste");
-        	    //label.setForeground(Color.white);
-        	    //g.getContentPane().add(texto);
-                g.setVisible(true);
-
+        		g.setVisible(true);
             }
         });        
     }
@@ -187,7 +193,9 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
 
         if(server.keyFight) {
         	server.player.setIconFight();
-        	server.player.setF(1);
+            server.player.setF(1);
+         
+            scoresComponents.get(server.player.identifier).setText(Integer.toString(server.player.getPontos()));
         }
         
         if(!(server.keyDown||server.keyUp||server.keyLeft||server.keyRight||server.keyFight)){        	
