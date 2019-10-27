@@ -41,6 +41,7 @@ public class PlayerConnected implements Runnable {
                 
                 for(PlayerConnected cliente:MultiPlayerGameServer.players){
                     System.out.println(message);
+                    
                     cliente.sendMessage(message);
                 }
             }

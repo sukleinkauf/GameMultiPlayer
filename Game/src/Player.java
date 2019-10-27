@@ -1,5 +1,7 @@
 
 import java.awt.Image;
+import java.awt.Rectangle;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -15,41 +17,49 @@ import javax.swing.JLabel;
  */
 public class Player extends JLabel{
     public String identifier;
-    public int x = 0, y = 0, f = 0;   
+    public int x = 0, y = 0, f = 0; 
+    protected int width = 88;
+    protected int height= 127;
 	ImageIcon walkL;
     ImageIcon walkR;
     ImageIcon walkU;
     ImageIcon walkD;
     ImageIcon stopped;
     ImageIcon fight;
+    int pontos = 100;
 
-    public void setup(){
+
+	public void setup(){
         setText("12");
         walkR = new ImageIcon(
                 new ImageIcon(getClass()
                         .getResource("c_d.gif"))
                         .getImage()
-                        .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
+                        .getScaledInstance(width, height, Image.SCALE_DEFAULT));
         walkL = new ImageIcon(
                 new ImageIcon(getClass()
                         .getResource("c_e.gif"))
                         .getImage()
-                        .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
+                        .getScaledInstance(width, height, Image.SCALE_DEFAULT));
         fight = new ImageIcon(
                 new ImageIcon(getClass()
                         .getResource("c_f.png"))
                         .getImage()
-                        .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
+                        .getScaledInstance(width, height, Image.SCALE_DEFAULT));
         stopped = new ImageIcon(
                 new ImageIcon(getClass()
                         .getResource("p_d.gif"))
                         .getImage()
-                        .getScaledInstance(88, 127, Image.SCALE_DEFAULT));
+                        .getScaledInstance(width, height, Image.SCALE_DEFAULT));
         setBounds(x, y, 90, 127);
         setIcon(walkR);
         setIcon(walkL);
     }
-    
+   
+	public Rectangle getBounds() {
+	    return new Rectangle(x, y, width, height);
+	}
+	 
     public void move(){
         setBounds(x, y, 90, 127);
     }
@@ -76,5 +86,13 @@ public class Player extends JLabel{
 
 	public void setF(int f) {
 		this.f = f;
+	}
+	
+    public int getPontos() {
+		return pontos;
+	}
+
+	public void setPontos(int pontos) {
+		this.pontos--;
 	}
 }

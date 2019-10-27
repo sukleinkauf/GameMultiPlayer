@@ -3,7 +3,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.Container;
+import java.awt.Rectangle;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class ConectServer extends JFrame implements Runnable{
     Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false,  keyFight = false;
@@ -36,6 +39,7 @@ public class ConectServer extends JFrame implements Runnable{
     public void receiveMessages(){
         try {
             String message;
+            boolean colision = false;
             
             while((message = reader.readLine()) != null){
                 String hash = extractHashFromMessage(message);
@@ -44,6 +48,12 @@ public class ConectServer extends JFrame implements Runnable{
                 for (Player player : GamePanel.players) {
                     if(player.identifier.contains(hash)){
                         hashExists = true;
+                        if(message.contains("M:F"))
+                        {
+                        	colision =	extractPosition(player, message);
+                        	player.setPontos(1);
+                        	System.out.println("COLIDIU DEMONHO:" + colision);
+                        }
                     }
                 }
 
@@ -61,6 +71,7 @@ public class ConectServer extends JFrame implements Runnable{
                 {                   
                     setKeyReleased(message);
                 }
+
             
                 for (Player player : GamePanel.players) {
                     if(player.identifier.contains(hash)){
@@ -82,6 +93,10 @@ public class ConectServer extends JFrame implements Runnable{
 
         newPlayer.identifier = identifier;
         GamePanel.players.add(newPlayer);
+
+		 JLabel texto = new JLabel("Teste");
+	     //label.setForeground(Color.white);
+		 container.add(texto);
         repaint();
 
         container.add(newPlayer);
@@ -156,7 +171,24 @@ public class ConectServer extends JFrame implements Runnable{
     private String extractPositionYFromMessage(String message){
         return extractInfoByKeyFromMessage(message, "Y:");
     }
+    
+    private  boolean extractPosition(Player playeratual ,String message) {
+    	Rectangle r2 = playeratual.getBounds();
+    	boolean colision = false;
+    	for (Player player : GamePanel.players) {
 
+    	    Rectangle r1 = player.getBounds();
+
+    	    if (r1.intersects(r2) && !(player.identifier.contains(playeratual.identifier))) {
+    	            
+    	       playeratual.setPontos(1);
+    	       colision = true;
+    	    }
+    	}
+    	
+    	return colision;
+    }
+    
     private String extractInfoByKeyFromMessage(String message, String key){
         String hash = "";
 

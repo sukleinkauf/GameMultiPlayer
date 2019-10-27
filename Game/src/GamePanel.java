@@ -1,7 +1,12 @@
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -52,8 +57,8 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
                 formKeyReleased(evt);
             }
         });
+          
         getContentPane().setLayout(null);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -146,6 +151,10 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
             public void run() {
                 GamePanel g = new GamePanel();
                 g.setSize(800, 600);
+        		g.setTitle("Mortal Kombat");
+        		// JTextArea texto = new JTextArea("Teste");
+        	    //label.setForeground(Color.white);
+        	    //g.getContentPane().add(texto);
                 g.setVisible(true);
 
             }
