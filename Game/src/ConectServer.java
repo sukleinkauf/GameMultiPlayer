@@ -4,12 +4,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.Container;
 import java.awt.Rectangle;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class ConectServer extends JFrame implements Runnable{
-    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false,  keyFight = false;
+public class ConectServer extends JFrame implements Runnable {
+    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false, keyFight = false;
     Player player;
     String myHash;
     Container container;
@@ -19,13 +20,13 @@ public class ConectServer extends JFrame implements Runnable{
     Socket socket;
     BufferedReader reader;
     PrintWriter writer;
-    
-    public ConectServer(String host, int porta){
+
+    public ConectServer(String host, int porta) {
         this.host = host;
         this.porta = porta;
     }
-    
-    public void setup(){
+
+    public void setup() {
         try {
             socket = new Socket(host, porta);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -33,48 +34,46 @@ public class ConectServer extends JFrame implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
-    public void receiveMessages(){
+    public void receiveMessages() {
         try {
             String message;
             boolean colision = false;
-            
-            while((message = reader.readLine()) != null){
+
+            while ((message = reader.readLine()) != null) {
                 String hash = extractHashFromMessage(message);
 
                 Boolean hashExists = false;
                 for (Player player : GamePanel.players) {
-                    if(player.identifier.contains(hash)){
+                    if (player.identifier.contains(hash)) {
                         hashExists = true;
-                        if(message.contains("M:F"))
-                        {
-                        	colision =	extractPosition(player, message);
-                        	player.setPontos(1);
-                        	System.out.println("COLIDIU DEMONHO:" + colision);
+                        if (message.contains("M:F")) {
+                            colision = isColision(player, message);
+                            
+                            if(colision)
+                            {
+                                player.incrementScore();
+                            }
                         }
                     }
                 }
 
-                if(!hashExists)
-                {
+                if (!hashExists) {
                     createPlayer(message, hash);
                 }
 
-                if(message.contains("T:MP"))
-                {                    
+                if (message.contains("T:MP")) {
                     setKetPressed(message);
                 }
 
-                if(message.contains("T:MR"))
-                {                   
+                if (message.contains("T:MR")) {
                     setKeyReleased(message);
                 }
 
-            
                 for (Player player : GamePanel.players) {
-                    if(player.identifier.contains(hash)){
+                    if (player.identifier.contains(hash)) {
                         this.player = player;
                     }
                 }
@@ -94,9 +93,8 @@ public class ConectServer extends JFrame implements Runnable{
         newPlayer.identifier = identifier;
         GamePanel.players.add(newPlayer);
 
-		 JLabel texto = new JLabel("Teste");
-	     //label.setForeground(Color.white);
-		 container.add(texto);
+        createLabelScore();
+
         repaint();
 
         container.add(newPlayer);
@@ -161,7 +159,6 @@ public class ConectServer extends JFrame implements Runnable{
 
     private String extractHashFromMessage (String message){
         return extractInfoByKeyFromMessage(message, "Hash:");
-
     }
 
     private String extractPositionXFromMessage(String message){
@@ -172,16 +169,14 @@ public class ConectServer extends JFrame implements Runnable{
         return extractInfoByKeyFromMessage(message, "Y:");
     }
     
-    private  boolean extractPosition(Player playeratual ,String message) {
-    	Rectangle r2 = playeratual.getBounds();
-    	boolean colision = false;
+    private  boolean isColision(Player playeratual, String message) {
+    	Rectangle attackingPlayer = playeratual.getBounds();
+        boolean colision = false;
+        
     	for (Player player : GamePanel.players) {
+    	    Rectangle defenderPlayer = player.getBounds();
 
-    	    Rectangle r1 = player.getBounds();
-
-    	    if (r1.intersects(r2) && !(player.identifier.contains(playeratual.identifier))) {
-    	            
-    	       playeratual.setPontos(1);
+    	    if (defenderPlayer.intersects(attackingPlayer) && !player.identifier.contains(playeratual.identifier)) {
     	       colision = true;
     	    }
     	}
@@ -201,6 +196,20 @@ public class ConectServer extends JFrame implements Runnable{
         return hash;
     }
     
+    private void createLabelScore(){
+        Integer size = GamePanel.scoresComponents.size();
+        Integer distance = 20;
+
+        JLabel labelScore = new JLabel();
+        labelScore.setText("100");
+        labelScore.setBounds(0, distance * size, 100, 100);
+        
+        GamePanel.scoresComponents.put(player.identifier, labelScore);
+
+        container.add(labelScore);
+        
+    }
+
     @Override
     public void run() {
         setup();

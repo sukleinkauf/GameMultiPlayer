@@ -26,7 +26,7 @@ public class Player extends JLabel{
     ImageIcon walkD;
     ImageIcon stopped;
     ImageIcon fight;
-    int pontos = 100;
+    int score = 100;
 
 
 	public void setup(){
@@ -89,10 +89,14 @@ public class Player extends JLabel{
 	}
 	
     public int getPontos() {
-		return pontos;
+		return score;
 	}
 
-	public void setPontos(int pontos) {
-		this.pontos--;
-	}
+	public void decreaseScore() {
+		this.score--;
+    }
+    
+    public void incrementScore(){
+        this.score++;
+    }
 }
