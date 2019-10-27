@@ -14,6 +14,7 @@ import javax.swing.JLabel;
  * @author gabriel
  */
 public class Player extends JLabel{
+    public String identifier;
     public int x = 0, y = 0, f = 0;   
 	ImageIcon walkL;
     ImageIcon walkR;
@@ -21,11 +22,7 @@ public class Player extends JLabel{
     ImageIcon walkD;
     ImageIcon stopped;
     ImageIcon fight;
-    
-    public Player(int InicialX, int InicialY) {
-    	
-    }
-    
+
     public void setup(){
         setText("12");
         walkR = new ImageIcon(
@@ -68,6 +65,7 @@ public class Player extends JLabel{
     public void setIconStopped(){
         setIcon(stopped);
     }
+    
     public void setIconFight(){
         setIcon(fight);
     }
@@ -79,5 +77,4 @@ public class Player extends JLabel{
 	public void setF(int f) {
 		this.f = f;
 	}
-    
 }
