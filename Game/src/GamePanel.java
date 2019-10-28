@@ -1,21 +1,11 @@
-
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JLabel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-public class GamePanel extends javax.swing.JFrame implements Runnable {
-    /**
-     *
-     */
+public class GamePanel extends javax.swing.JFrame implements Runnable {    
     private static final long serialVersionUID = 1L;
     static List<Player> players = new ArrayList<Player>();
     static Map<String,JLabel> scoresComponents = new HashMap<String,JLabel>();
