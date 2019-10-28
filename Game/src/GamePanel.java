@@ -1,6 +1,4 @@
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -70,19 +67,19 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                server.sendMessage("T:MP-M:R-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_RIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_LEFT:
-                server.sendMessage("T:MP-M:L-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_LEFT + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_UP:
-                server.sendMessage("T:MP-M:U-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_UP + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_DOWN:
-                server.sendMessage("T:MP-M:D-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_DOWN + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_SPACE:
-                server.sendMessage("T:MP-M:F-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_FIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
             	break;
         }
  
@@ -91,25 +88,25 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                server.sendMessage("T:MR-M:R-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_RIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_LEFT:
-                server.sendMessage("T:MR-M:L-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_LEFT + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_UP:
-                server.sendMessage("T:MR-M:U-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_UP + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_DOWN:
-                server.sendMessage("T:MR-M:D-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_DOWN + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
             case KeyEvent.VK_SPACE:
-                server.sendMessage("T:MR-M:F-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_FIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
                 break;
         }
     }//GEN-LAST:event_formKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        player = new Player("Você");
+        player = new Player("Vocï¿½");
         player.setup();
         player.identifier = Integer.toString(player.hashCode());
         players.add(player);

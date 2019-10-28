@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.Image;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -49,7 +48,7 @@ public class ConectServer extends JFrame implements Runnable {
                 for (Player player : GamePanel.players) {
                     if (player.identifier.contains(hash)) {
                         hashExists = true;
-                        if (message.contains("M:F")) {
+                        if (message.contains(Constants.MOVEMENT_FIGHT)) {
                             colision = isColision(player, message);
                             
                             if(colision)
@@ -64,11 +63,11 @@ public class ConectServer extends JFrame implements Runnable {
                     createPlayer(message, hash);
                 }
 
-                if (message.contains("T:MP")) {
+                if (message.contains(Constants.TYPE_PRESSED)) {
                     setKetPressed(message);
                 }
 
-                if (message.contains("T:MR")) {
+                if (message.contains(Constants.TYPE_RELEASED)) {
                     setKeyReleased(message);
                 }
 
@@ -101,46 +100,46 @@ public class ConectServer extends JFrame implements Runnable {
     }
 
     private void setKetPressed(String message) {
-        if(message.contains("M:L"))
+        if(message.contains(Constants.MOVEMENT_LEFT))
         {
             keyLeft = true;
         }
-        if(message.contains("M:R"))
+        if(message.contains(Constants.MOVEMENT_RIGHT))
         {
             keyRight = true;
         }
-        if(message.contains("M:U"))
+        if(message.contains(Constants.MOVEMENT_UP))
         {
             keyUp = true;
         }
-        if(message.contains("M:D"))
+        if(message.contains(Constants.MOVEMENT_DOWN))
         {
             keyDown = true;
         }
-        if(message.contains("M:F"))
+        if(message.contains(Constants.MOVEMENT_FIGHT))
         {
             keyFight = true;
         }
     }
 
     private void setKeyReleased(String message) {
-        if(message.contains("M:L"))
+        if(message.contains(Constants.MOVEMENT_LEFT))
         {
             keyLeft = false;
         }
-        if(message.contains("M:R"))
+        if(message.contains(Constants.MOVEMENT_RIGHT))
         {
             keyRight = false;
         }
-        if(message.contains("M:U"))
+        if(message.contains(Constants.MOVEMENT_UP))
         {
             keyUp = false;
         }
-        if(message.contains("M:D"))
+        if(message.contains(Constants.MOVEMENT_DOWN))
         {
             keyDown = false;
         }
-        if(message.contains("M:F"))
+        if(message.contains(Constants.MOVEMENT_FIGHT))
         {
             keyFight = false;
         }
