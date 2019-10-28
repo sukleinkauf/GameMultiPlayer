@@ -16,6 +16,10 @@ import javax.swing.JLabel;
  * @author gabriel
  */
 public class Player extends JLabel{
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     public String identifier;
     public String name;
 	public int x = 0, y = 0, f = 0; 

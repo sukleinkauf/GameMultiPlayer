@@ -4,11 +4,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.Container;
 import java.awt.Rectangle;
-import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class ConectServer extends JFrame implements Runnable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false, keyFight = false;
     Player player;
     String myHash;
