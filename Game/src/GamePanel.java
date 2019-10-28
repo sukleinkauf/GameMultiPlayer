@@ -60,6 +60,8 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
                 formKeyReleased(evt);
             }
         });
+        
+        
           
         getContentPane().setLayout(null);
         pack();
@@ -83,7 +85,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
                 server.sendMessage("T:MP-M:F-X:" + player.getX() + "-Y:" + player.getY());
             	break;
         }
-
+ 
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -107,17 +109,25 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_formKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        player = new Player();
+        player = new Player("Você");
         player.setup();
         player.identifier = Integer.toString(player.hashCode());
         players.add(player);
+        player.setText("A");
 
+
+        JLabel labelText = new JLabel();
+        labelText.setText("Placar: ");
+        labelText.setBounds(0, 0, 100, 100);
+
+        
         JLabel labelScore = new JLabel();
-        labelScore.setText("100");
-        labelScore.setBounds(0, 0, 100, 100);
+        labelScore.setText(player.getName() +": "+ player.getScore());
+        labelScore.setBounds(0, 20, 100, 100);
         
         scoresComponents.put(player.identifier, labelScore);
 
+        getContentPane().add(labelText);
         getContentPane().add(labelScore);
         getContentPane().add(player);
         repaint();
@@ -195,7 +205,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         	server.player.setIconFight();
             server.player.setF(1);
          
-            scoresComponents.get(server.player.identifier).setText(Integer.toString(server.player.getPontos()));
+            scoresComponents.get(server.player.identifier).setText(server.player.getName()+": "+ server.player.getScore());
         }
         
         if(!(server.keyDown||server.keyUp||server.keyLeft||server.keyRight||server.keyFight)){        	

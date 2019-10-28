@@ -17,7 +17,8 @@ import javax.swing.JLabel;
  */
 public class Player extends JLabel{
     public String identifier;
-    public int x = 0, y = 0, f = 0; 
+    public String name;
+	public int x = 0, y = 0, f = 0; 
     protected int width = 88;
     protected int height= 127;
 	ImageIcon walkL;
@@ -26,9 +27,11 @@ public class Player extends JLabel{
     ImageIcon walkD;
     ImageIcon stopped;
     ImageIcon fight;
-    int score = 100;
+    int score = 0;
 
-
+    public Player(String name) {
+    	this.name = name;
+    }
 	public void setup(){
         setText("12");
         walkR = new ImageIcon(
@@ -88,7 +91,7 @@ public class Player extends JLabel{
 		this.f = f;
 	}
 	
-    public int getPontos() {
+    public int getScore() {
 		return score;
 	}
 
@@ -99,4 +102,11 @@ public class Player extends JLabel{
     public void incrementScore(){
         this.score++;
     }
+    
+    public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }

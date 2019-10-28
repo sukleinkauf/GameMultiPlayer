@@ -84,7 +84,7 @@ public class ConectServer extends JFrame implements Runnable {
     }
 
     private void createPlayer(String message, String identifier) {
-        Player newPlayer = new Player();
+        Player newPlayer = new Player("Outro Player");
         newPlayer.setup();
 
         newPlayer.x = Integer.parseInt(extractPositionXFromMessage(message));
@@ -92,8 +92,7 @@ public class ConectServer extends JFrame implements Runnable {
 
         newPlayer.identifier = identifier;
         GamePanel.players.add(newPlayer);
-
-        createLabelScore();
+        createLabelScore(newPlayer);
 
         repaint();
 
@@ -196,15 +195,15 @@ public class ConectServer extends JFrame implements Runnable {
         return hash;
     }
     
-    private void createLabelScore(){
+    private void createLabelScore(Player newPlayer){
         Integer size = GamePanel.scoresComponents.size();
-        Integer distance = 20;
+        Integer distance = 40;
 
         JLabel labelScore = new JLabel();
-        labelScore.setText("100");
+        labelScore.setText(newPlayer.getName()+": " + newPlayer.getScore());
         labelScore.setBounds(0, distance * size, 100, 100);
         
-        GamePanel.scoresComponents.put(player.identifier, labelScore);
+        GamePanel.scoresComponents.put(newPlayer.identifier, labelScore);
 
         container.add(labelScore);
         
