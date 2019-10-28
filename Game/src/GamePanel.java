@@ -24,8 +24,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     static List<Player> players = new ArrayList<Player>();
     static Map<String,JLabel> scoresComponents = new HashMap<String,JLabel>();
     Player player;
-    ConectServer server;
-    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false,  keyFight = false;
+    ConectServer server;    
     Thread t;
     Integer speed = 4;
 
