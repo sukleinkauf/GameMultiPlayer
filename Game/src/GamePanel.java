@@ -95,15 +95,12 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         player.setup();
         player.identifier = Integer.toString(player.hashCode());
         players.add(player);
-        player.setText("A");
 
         JLabel labelText = new JLabel();
         labelText.setText("Placar: ");
         labelText.setBounds(10, 0, 100, 100);
         
-        
         JProgressBar labelScore = new JProgressBar();
-        //labelScore.setName(player.getName() +": "+ player.getScore());
         labelScore.setValue(player.getScore());
         labelScore.setBounds(10, 60, 200, 20);
         
