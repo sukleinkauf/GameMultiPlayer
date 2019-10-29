@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PlayerConnected implements Runnable {
-    int x, y, speed = 4;
+    int x = 200, y = 50, speed = 4;
     String Hash;
     Socket socket;
     Thread threadReceiveMessages;
