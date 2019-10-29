@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 public class ConectServer extends JFrame implements Runnable {    
     private static final long serialVersionUID = 1L;
@@ -197,15 +198,20 @@ public class ConectServer extends JFrame implements Runnable {
     }
     
     private void createLabelScore(Player newPlayer){
-        Integer size = GamePanel.scoresComponents.size();
-        Integer distance = 40;
+        //Integer size = GamePanel.scoresComponents.size();
+        //Integer distance = 120;
+        
 
-        JLabel labelScore = new JLabel();
-        labelScore.setText(newPlayer.getName()+": " + newPlayer.getScore());
-        labelScore.setBounds(0, distance * size, 100, 100);
+        JProgressBar  labelScore = new JProgressBar();
+        labelScore.setStringPainted(true); 
+        labelScore.setString(newPlayer.getName());
+
+        //labelScore.setName(newPlayer.getName()+": " + newPlayer.getScore());
+        labelScore.setValue(newPlayer.getScore());
+        labelScore.setBounds(300, 60, 200, 20);
         
         GamePanel.scoresComponents.put(newPlayer.identifier, labelScore);
-
+        
         container.add(labelScore);
         
     }

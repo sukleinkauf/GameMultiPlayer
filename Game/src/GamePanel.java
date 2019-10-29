@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 public class GamePanel extends javax.swing.JFrame implements Runnable {    
     private static final long serialVersionUID = 1L;
     static List<Player> players = new ArrayList<Player>();
-    static Map<String,JLabel> scoresComponents = new HashMap<String,JLabel>();
+    static Map<String,JProgressBar> scoresComponents = new HashMap<String,JProgressBar>();
     Player player;
     ConectServer server;    
     Thread t;
@@ -89,7 +90,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_formKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        player = new Player("Voc�");
+        player = new Player("Voce");
         player.setup();
         player.identifier = Integer.toString(player.hashCode());
         players.add(player);
@@ -98,12 +99,16 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
 
         JLabel labelText = new JLabel();
         labelText.setText("Placar: ");
-        labelText.setBounds(0, 0, 100, 100);
-
+        labelText.setBounds(10, 0, 100, 100);
         
-        JLabel labelScore = new JLabel();
-        labelScore.setText(player.getName() +": "+ player.getScore());
-        labelScore.setBounds(0, 20, 100, 100);
+        
+        JProgressBar labelScore = new JProgressBar();
+        //labelScore.setName(player.getName() +": "+ player.getScore());
+        labelScore.setValue(player.getScore());
+        labelScore.setBounds(10, 60, 200, 20);
+        
+        labelScore.setStringPainted(true); 
+        labelScore.setString(player.getName());
         
         scoresComponents.put(player.identifier, labelScore);
 
@@ -185,7 +190,7 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         	server.player.setIconFight();
             server.player.setF(1);
          
-            scoresComponents.get(server.player.identifier).setText(server.player.getName()+": "+ server.player.getScore());
+            scoresComponents.get(server.player.identifier).setValue(server.player.getScore());
         }
         
         if(!(server.keyDown||server.keyUp||server.keyLeft||server.keyRight||server.keyFight)){        	
