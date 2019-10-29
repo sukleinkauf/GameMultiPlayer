@@ -168,6 +168,7 @@ public class ConectServer extends JFrame implements Runnable {
 
             if (defenderPlayer.intersects(attackingPlayer) && !player.identifier.contains(playeratual.identifier)) {
                 colision = true;
+                break;
             }
         }
 
