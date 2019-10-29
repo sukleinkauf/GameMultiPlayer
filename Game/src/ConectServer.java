@@ -48,7 +48,7 @@ public class ConectServer extends JFrame implements Runnable {
                         hashExists = true;
 
                         if (message.contains(Constants.TYPE_PRESSED)) {
-                            setKetPressed(message, player);
+                            setKeyPressed(message, player);
                             player.x = extractPositionXFromMessage(message);
                             player.y = extractPositionYFromMessage(message);
                         }
@@ -88,7 +88,7 @@ public class ConectServer extends JFrame implements Runnable {
         container.add(newPlayer);
     }
 
-    private void setKetPressed(String message, Player player) {
+    private void setKeyPressed(String message, Player player) {
         if (message.contains(Constants.MOVEMENT_LEFT)) {
             player.keyLeft = true;
         }
