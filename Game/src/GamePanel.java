@@ -1,3 +1,4 @@
+import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -189,7 +190,17 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         if(server.keyFight) {
         	server.player.setIconFight();
             server.player.setF(1);
-         
+            
+            if(server.player.getScore() >= 100) {
+            	
+            	getContentPane().removeAll();
+            	//repaint();
+                JLabel label = new JLabel(server.player.getName()+" WIN!");
+                setLayout(new GridBagLayout());
+                add(label);
+                repaint();
+
+            }
             scoresComponents.get(server.player.identifier).setValue(server.player.getScore());
         }
         
