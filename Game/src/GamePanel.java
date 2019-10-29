@@ -1,14 +1,16 @@
+import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 public class GamePanel extends javax.swing.JFrame implements Runnable {
     private static final long serialVersionUID = 1L;
     static List<Player> players = new ArrayList<Player>();
-    static Map<String, JLabel> scoresComponents = new HashMap<String, JLabel>();
+    static Map<String,JProgressBar> scoresComponents = new HashMap<String,JProgressBar>();
     Player player;
     ConectServer server;
     Thread t;
@@ -88,8 +90,8 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         }
     }// GEN-LAST:event_formKeyReleased
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_formWindowOpened
-        player = new Player("Voc�");
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        player = new Player("Voce");
         player.setup();
         player.identifier = Integer.toString(player.hashCode());
         players.add(player);
@@ -97,12 +99,17 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
 
         JLabel labelText = new JLabel();
         labelText.setText("Placar: ");
-        labelText.setBounds(0, 0, 100, 100);
-
-        JLabel labelScore = new JLabel();
-        labelScore.setText(player.getName() + ": " + player.getScore());
-        labelScore.setBounds(0, 20, 100, 100);
-
+        labelText.setBounds(10, 0, 100, 100);
+        
+        
+        JProgressBar labelScore = new JProgressBar();
+        //labelScore.setName(player.getName() +": "+ player.getScore());
+        labelScore.setValue(player.getScore());
+        labelScore.setBounds(10, 60, 200, 20);
+        
+        labelScore.setStringPainted(true); 
+        labelScore.setString(player.getName());
+        
         scoresComponents.put(player.identifier, labelScore);
 
         getContentPane().add(labelText);
@@ -172,9 +179,19 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
                 player.setIconFight();
                 player.setF(1);
 
-                scoresComponents.get(player.identifier).setText(player.getName() + ": " + player.getScore());
-            }
+                if(player.getScore() >= 100) {
+            	
+                    getContentPane().removeAll();
+                    //repaint();
+                    JLabel label = new JLabel(player.getName()+" WIN!");
+                    setLayout(new GridBagLayout());
+                    add(label);
+                    repaint();
+                }
 
+                scoresComponents.get(player.identifier).setValue(player.getScore());
+            }
+        
             if (!(player.keyDown || player.keyUp || player.keyLeft || player.keyRight || player.keyFight)) {
                 player.setIconStopped();
             }
