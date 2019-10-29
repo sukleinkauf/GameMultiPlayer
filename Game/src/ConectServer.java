@@ -7,10 +7,7 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class ConectServer extends JFrame implements Runnable {
-    /**
-     *
-     */
+public class ConectServer extends JFrame implements Runnable {    
     private static final long serialVersionUID = 1L;
     Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false, keyFight = false;
     Player player;
@@ -50,7 +47,10 @@ public class ConectServer extends JFrame implements Runnable {
                 Boolean hashExists = false;
                 for (Player player : GamePanel.players) {
                     if (player.identifier.contains(hash)) {
+                        //Se o player já existe, seta como true
+                        //Caso contrário, irá criar o player e adicionar na tela
                         hashExists = true;
+                        
                         if (message.contains(Constants.MOVEMENT_FIGHT)) {
                             colision = isColision(player, message);
                             
@@ -99,7 +99,6 @@ public class ConectServer extends JFrame implements Runnable {
         repaint();
 
         container.add(newPlayer);
-        System.out.println("Adicionei o player " + newPlayer.identifier + " na lista");
     }
 
     private void setKetPressed(String message) {
