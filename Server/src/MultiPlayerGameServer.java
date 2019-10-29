@@ -14,7 +14,7 @@ import java.util.List;
  * @author gabriel
  */
 public class MultiPlayerGameServer {
-  static List<PlayerConnected> players = new ArrayList<>();
+    static List<PlayerConnected> players = new ArrayList<>();
     ServerSocket ss;
     Socket socketNewClient;
 
@@ -30,7 +30,7 @@ public class MultiPlayerGameServer {
         try {
             while (true) {
                 socketNewClient = ss.accept();
-                PlayerConnected newPlayer = new PlayerConnected(socketNewClient);                
+                PlayerConnected newPlayer = new PlayerConnected(socketNewClient);
                 players.add(newPlayer);
             }
         } catch (Exception e) {

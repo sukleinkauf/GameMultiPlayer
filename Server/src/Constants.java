@@ -1,4 +1,4 @@
-public final class Constants{
+public final class Constants {
     public static final String TYPE_RELEASED = "T:MR";
     public static final String TYPE_PRESSED = "T:MP";
     public static final String TYPE_NEW_PLAYER = "T:N";
