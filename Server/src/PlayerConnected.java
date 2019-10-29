@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class PlayerConnected implements Runnable {
+    int x, y, speed = 4;
     String Hash;
     Socket socket;
     Thread threadReceiveMessages;
@@ -37,15 +38,38 @@ public class PlayerConnected implements Runnable {
                 if(message.contains("T:N")){
                     Hash = message;
                 }
+
+                CalculeMove(message);
                 
                 for(PlayerConnected cliente:MultiPlayerGameServer.players){
-                    System.out.println(message);
-                    
                     cliente.sendMessage(message);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void CalculeMove(String message)
+    {
+        if (message.contains(Constants.MOVEMENT_RIGHT))
+        {            
+            this.x += speed;
+        }
+        
+        if (message.contains(Constants.MOVEMENT_LEFT))
+        {
+            this.x -= speed;
+        }
+        
+        if (message.contains(Constants.MOVEMENT_UP))
+        {
+            this.y -= speed;
+        }
+        
+        if (message.contains(Constants.MOVEMENT_DOWN))
+        {
+            this.y += speed;
         }
     }
     
