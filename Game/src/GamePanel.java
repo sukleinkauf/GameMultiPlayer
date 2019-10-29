@@ -50,19 +50,19 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_RIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_RIGHT);
                 break;
             case KeyEvent.VK_LEFT:
-                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_LEFT + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_LEFT);
                 break;
             case KeyEvent.VK_UP:
-                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_UP + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_UP);
                 break;
             case KeyEvent.VK_DOWN:
-                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_DOWN + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_DOWN);
                 break;
             case KeyEvent.VK_SPACE:
-                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_FIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_PRESSED + "-" + Constants.MOVEMENT_FIGHT);
             	break;
         }
  
@@ -71,19 +71,19 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
-                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_RIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_RIGHT);
                 break;
             case KeyEvent.VK_LEFT:
-                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_LEFT + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_LEFT);
                 break;
             case KeyEvent.VK_UP:
-                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_UP + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_UP);
                 break;
             case KeyEvent.VK_DOWN:
-                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_DOWN + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_DOWN);
                 break;
             case KeyEvent.VK_SPACE:
-                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_FIGHT + "-X:" + player.getX() + "-Y:" + player.getY());
+                server.sendMessage(Constants.TYPE_RELEASED + "-" + Constants.MOVEMENT_FIGHT);
                 break;
         }
     }//GEN-LAST:event_formKeyReleased
@@ -158,41 +158,29 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
     }
 
     public void updateGame() {
-        if(server == null || server.player == null)
-            return;
+        for (Player player : players) 
+        {
+            if (player.keyRight) {
+                player.setIconRight();                
+            }
+            
+            if (player.keyLeft) {
+                player.setIconLeft();                
+            }
+            
+            if(player.keyFight) {
+                player.setIconFight();
+                player.setF(1);
+            
+                scoresComponents.get(player.identifier).setText(player.getName()+": "+ player.getScore());
+            }
+            
+            if(!(player.keyDown||player.keyUp||player.keyLeft||player.keyRight||player.keyFight)){        	
+                player.setIconStopped();
+            }
 
-        server.player.setF(0);
-
-        if (server.keyRight) {
-            server.player.setIconRight();
-            server.player.x += speed;
-        }
-        
-        if (server.keyLeft) {
-            server.player.setIconLeft();
-            server.player.x -= speed;
-        }
-        
-        if (server.keyUp) {
-            server.player.y -= speed;
-        }
-        
-        if (server.keyDown) {
-            server.player.y += speed;
-        }
-
-        if(server.keyFight) {
-        	server.player.setIconFight();
-            server.player.setF(1);
-         
-            scoresComponents.get(server.player.identifier).setText(server.player.getName()+": "+ server.player.getScore());
-        }
-        
-        if(!(server.keyDown||server.keyUp||server.keyLeft||server.keyRight||server.keyFight)){        	
-        	server.player.setIconStopped();
-        }
-
-        server.player.move();
+            player.move();
+        }      
     }
     
     @Override
@@ -200,13 +188,10 @@ public class GamePanel extends javax.swing.JFrame implements Runnable {
         while (true) {
             try {
                 updateGame();
-                Thread.sleep(20);
+                Thread.sleep(10);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
 }

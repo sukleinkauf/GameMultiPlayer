@@ -32,6 +32,7 @@ public class Player extends JLabel{
     ImageIcon stopped;
     ImageIcon fight;
     int score = 0;
+    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false, keyFight = false;
 
     public Player(String name) {
     	this.name = name;

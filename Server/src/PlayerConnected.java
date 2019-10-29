@@ -33,16 +33,11 @@ public class PlayerConnected implements Runnable {
         try {
             String message;
             while((message = input.readLine()) != null){                
-                System.out.println(message);
-
-                if(message.contains("T:N")){
-                    Hash = message;
-                }
-
                 CalculeMove(message);
                 
-                for(PlayerConnected cliente:MultiPlayerGameServer.players){
-                    cliente.sendMessage(message);
+                for(PlayerConnected cliente:MultiPlayerGameServer.players){                
+                    System.out.println(message + "-X:" + this.x + "-Y:" + this.y);
+                    cliente.sendMessage(message + "-X:" + this.x + "-Y:" + this.y);
                 }
             }
         } catch (Exception e) {
@@ -52,6 +47,10 @@ public class PlayerConnected implements Runnable {
 
     public void CalculeMove(String message)
     {
+        if(!message.contains(Constants.TYPE_PRESSED)){
+            return;
+        }
+        
         if (message.contains(Constants.MOVEMENT_RIGHT))
         {            
             this.x += speed;
@@ -77,6 +76,7 @@ public class PlayerConnected implements Runnable {
         output.println(message);
         output.flush();
     }
+    
     
     @Override
     public void run() {

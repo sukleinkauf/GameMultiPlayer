@@ -9,8 +9,6 @@ import javax.swing.JLabel;
 
 public class ConectServer extends JFrame implements Runnable {    
     private static final long serialVersionUID = 1L;
-    Boolean keyRight = false, keyLeft = false, keyUp = false, keyDown = false, keyFight = false;
-    Player player;
     String myHash;
     Container container;
     String host;
@@ -33,13 +31,11 @@ public class ConectServer extends JFrame implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void receiveMessages() {
         try {
             String message;
-            boolean colision = false;
 
             while ((message = reader.readLine()) != null) {
                 String hash = extractHashFromMessage(message);
@@ -50,34 +46,25 @@ public class ConectServer extends JFrame implements Runnable {
                         //Se o player já existe, seta como true
                         //Caso contrário, irá criar o player e adicionar na tela
                         hashExists = true;
-                        
-                        if (message.contains(Constants.MOVEMENT_FIGHT)) {
-                            colision = isColision(player, message);
-                            
-                            if(colision)
-                            {
-                                player.incrementScore();
-                            }
+                                             
+                        if (message.contains(Constants.TYPE_PRESSED)) {
+                            setKetPressed(message, player);
+                            player.x = extractPositionXFromMessage(message);
+                            player.y = extractPositionYFromMessage(message);    
+                        }
+
+                        if (message.contains(Constants.TYPE_RELEASED)) {
+                            setKeyReleased(message, player);
+                        }
+
+                        if (message.contains(Constants.MOVEMENT_FIGHT) && isColision(player, message)) {                            
+                            player.incrementScore();                            
                         }
                     }
                 }
 
                 if (!hashExists) {
                     createPlayer(message, hash);
-                }
-
-                if (message.contains(Constants.TYPE_PRESSED)) {
-                    setKetPressed(message);
-                }
-
-                if (message.contains(Constants.TYPE_RELEASED)) {
-                    setKeyReleased(message);
-                }
-
-                for (Player player : GamePanel.players) {
-                    if (player.identifier.contains(hash)) {
-                        this.player = player;
-                    }
                 }
             }
         } catch (Exception e) {
@@ -89,8 +76,8 @@ public class ConectServer extends JFrame implements Runnable {
         Player newPlayer = new Player("Outro Player");
         newPlayer.setup();
 
-        newPlayer.x = Integer.parseInt(extractPositionXFromMessage(message));
-        newPlayer.y = Integer.parseInt(extractPositionYFromMessage(message));
+        newPlayer.x = extractPositionXFromMessage(message);
+        newPlayer.y = extractPositionYFromMessage(message);
 
         newPlayer.identifier = identifier;
         GamePanel.players.add(newPlayer);
@@ -101,49 +88,49 @@ public class ConectServer extends JFrame implements Runnable {
         container.add(newPlayer);
     }
 
-    private void setKetPressed(String message) {
+    private void setKetPressed(String message, Player player) {
         if(message.contains(Constants.MOVEMENT_LEFT))
         {
-            keyLeft = true;
+            player.keyLeft = true;
         }
         if(message.contains(Constants.MOVEMENT_RIGHT))
         {
-            keyRight = true;
+            player.keyRight = true;
         }
         if(message.contains(Constants.MOVEMENT_UP))
         {
-            keyUp = true;
+            player.keyUp = true;
         }
         if(message.contains(Constants.MOVEMENT_DOWN))
         {
-            keyDown = true;
+            player.keyDown = true;
         }
         if(message.contains(Constants.MOVEMENT_FIGHT))
         {
-            keyFight = true;
+            player.keyFight = true;
         }
     }
 
-    private void setKeyReleased(String message) {
+    private void setKeyReleased(String message, Player player) {
         if(message.contains(Constants.MOVEMENT_LEFT))
         {
-            keyLeft = false;
+            player.keyLeft = false;
         }
         if(message.contains(Constants.MOVEMENT_RIGHT))
         {
-            keyRight = false;
+            player.keyRight = false;
         }
         if(message.contains(Constants.MOVEMENT_UP))
         {
-            keyUp = false;
+            player.keyUp = false;
         }
         if(message.contains(Constants.MOVEMENT_DOWN))
         {
-            keyDown = false;
+            player.keyDown = false;
         }
         if(message.contains(Constants.MOVEMENT_FIGHT))
         {
-            keyFight = false;
+            player.keyFight = false;
         }
     }
 
@@ -161,14 +148,26 @@ public class ConectServer extends JFrame implements Runnable {
         return extractInfoByKeyFromMessage(message, "Hash:");
     }
 
-    private String extractPositionXFromMessage(String message){
-        return extractInfoByKeyFromMessage(message, "X:");
+    private int extractPositionXFromMessage(String message){
+        return Integer.parseInt(extractInfoByKeyFromMessage(message, "X:"));
     }
 
-    private String extractPositionYFromMessage(String message){
-        return extractInfoByKeyFromMessage(message, "Y:");
+    private int extractPositionYFromMessage(String message){
+        return Integer.parseInt(extractInfoByKeyFromMessage(message, "Y:"));
     }
-    
+
+    private String extractInfoByKeyFromMessage(String message, String key){
+        String hash = "";
+
+        for (String part : message.split("-")) {
+            if(part.contains(key)){
+                hash = part.replace(key, "");
+            }   
+        };
+
+        return hash;
+    }
+
     private  boolean isColision(Player playeratual, String message) {
     	Rectangle attackingPlayer = playeratual.getBounds();
         boolean colision = false;
@@ -183,19 +182,7 @@ public class ConectServer extends JFrame implements Runnable {
     	
     	return colision;
     }
-    
-    private String extractInfoByKeyFromMessage(String message, String key){
-        String hash = "";
-
-        for (String part : message.split("-")) {
-            if(part.contains(key)){
-                hash = part.replace(key, "");
-            }   
-        };
-
-        return hash;
-    }
-    
+   
     private void createLabelScore(Player newPlayer){
         Integer size = GamePanel.scoresComponents.size();
         Integer distance = 40;
